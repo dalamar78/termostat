@@ -8,16 +8,23 @@
  * @link  link a github
  * 
  */
-
  $sql= "SELECT temperatura, humedad FROM temperaturas WHERE id=( SELECT max(id) FROM temperaturas);";
  $SQL->consulta($sql);
  $valoresTemp = $SQL->extrae();
-  $sql= "SELECT temperatura_objetivo,estado,metodo FROM estado";
+ $sql= "SELECT temperatura_objetivo,estado,metodo,activo FROM estado";
  $SQL->consulta($sql);
  $datosIniciales = $SQL->extrae();
  $estado_checked="";
+#pinto el estado actual de la caldera  on-off, arrancada-parada 
  if ($datosIniciales["estado"] == 1 ){
 	 $estado_checked="checked";
+	 $texto_arra="ARRANCADO";
+	 $clase_arra="text-success";
+ }else{
+	 $texto_arra="PARADO";
+	 $clase_arra="text-danger";
+ }
+ if ($datosIniciales["activo"] == 1 ){
 	 $texto_arra="ARRANCADO";
 	 $clase_arra="text-success";
  }else{
@@ -29,7 +36,7 @@
 	 $metodo_checked="checked";
 	 
  }
-   $html='             <div class="site-content-title">
+ $html='<div class="site-content-title">
                     <h2 class="float-xs-left content-title-main">Temperatura del hogar</h2>
                     <!-- START BREADCRUMB -->
                     <ol class="breadcrumb float-xs-right">
@@ -44,7 +51,6 @@
                 </div>
                 <!-- END PAGE TITLE -->
                 <!--  START DASHBOARD -->
-
                 <div class="contain-inner dashboard-v1">
                     <div class="col-md-12">
 							<div class="row">
@@ -66,7 +72,6 @@
 																		</label>
 																	</div>
 											   
-
 																	<div class="switch-box">
 																		<label class="switch-button switch-yes-no-button manual">
 																			<input class="switch-input-button danger-switch programacion" type="checkbox" '.$metodo_checked.' />
@@ -75,7 +80,6 @@
 																	</div>
 												                </div>
 															</div>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -101,7 +105,6 @@
 															  style="width: 71px; height: 45px; position: absolute; vertical-align: middle; margin-top: 45px; margin-left: -103px; border: 0px; background: none; font-style: normal; font-variant: normal; font-weight: bold; font-stretch: normal; font-size: 27px; line-height: normal; font-family: Arial; text-align: center; color: rgb(255, 152, 0); padding: 0px; -webkit-appearance: none;">  
 																
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -123,7 +126,6 @@
 																data-fgcolor="#E91E63" 
 																readonly="readonly" 
 																style="width: 66px; height: 41px; position: absolute; vertical-align: middle; margin-top: 41px; margin-left: -95px; border: 0px; background: none; font-style: normal; font-variant: normal; font-weight: bold; font-stretch: normal; font-size: 25px; line-height: normal; font-family: Arial; text-align: center; color: rgb(233, 30, 99); padding: 0px; -webkit-appearance: none;">                                                          </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -147,7 +149,6 @@
 														 readonly="readonly" 
 													 style="width: 71px; height: 45px; position: absolute; vertical-align: middle; margin-top: 45px; margin-left: -103px; border: 0px; background: none; font-style: normal; font-variant: normal; font-weight: bold; font-stretch: normal; font-size: 27px; line-height: normal; font-family: Arial; text-align: center; color: rgb(0, 188, 212); padding: 0px; -webkit-appearance: none;">
 															</div>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -155,13 +156,10 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         <div class="row">
-
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div class="content">
-
                                     <div class="dashboard-header">
                                         <h4 class="page-content-title float-xs-left">Evolución</h4>
                                         <div class="dashboard-action">
@@ -184,43 +182,48 @@
                                         <div class="row">
                                             <div class="data_widgets_block">
                         
-
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-
                         </div>
-
                     </div>
-
                 </div>';
 $js="$(document).ready(function() { 
-/*modificamos la temperatura y humedad cada 30''*/   
+/*modificamos la temperatura y humedad cada 10''*/   
+/*pintamos si esta arrancado o no */   
     function tomaTemperaturas(){
            
 		   $.post( 'codigo/ajax/tomaTemperaturas.php', function( data ) {
 		  		var obj = JSON.parse(data);	
-			   var temperatura=obj.temperatura ;
-			   var humedad =obj.humedad ;
-			   var temperaturaObjativo=obj.temperaturaObjetivo ;
-			   console.log(data);
-			 
-			   $('#temperatura').val(temperatura);
-			   $('#temperatura').trigger('change');
+				var temperatura=obj.temperatura ;
+				var humedad =obj.humedad ;
+				var temperaturaObjativo=obj.temperaturaObjetivo ;
+				var activo = obj.activo ;
+				console.log(data);
+				if (activo === '1' ){
+					$('#arra_para').removeClass('text-danger');
+					$('#arra_para').html('ARRANCADO');
+					$('#arra_para').addClass('text-success');
+				  }else{
+					$('#arra_para').removeClass('text-success');
+					$('#arra_para').html('PARADO');
+					$('#arra_para').addClass('text-danger');
+				}
+				$('#temperatura').val(temperatura);
+				$('#temperatura').trigger('change');
 	
-				 $('#humedad').val(humedad);
+				$('#humedad').val(humedad);
 				$('#humedad').trigger('change');
 				 
-				 $('#temperaturaObjativo').val(temperaturaObjativo);
+				$('#temperaturaObjativo').val(temperaturaObjativo);
 				$('#temperaturaObjativo').trigger('change');
  
 			});
 	}
 	tomaTemperaturas();
-    setInterval(tomaTemperaturas, 30000);
+    setInterval(tomaTemperaturas, 10000);
 	
 /* llamamos ajax para modificar la temperatura objetivo*/
 	
@@ -238,11 +241,10 @@ $js="$(document).ready(function() {
     });
 /*LLAMAMOS AJAX para cambiar el estado 0 apagado 1 encendido*/	
 	var changeCheckbox = document.querySelector('.estado');
-
 	changeCheckbox.onchange = function() {
 			$.post( 'codigo/ajax/cambiaEstado.php',{ estado: changeCheckbox.checked},  function( data ) {
 		  		  console.log('cambiado a ESTADO: '+data);
-				  if (data === '1' ){
+				 /* if (data === '1' ){
 					$('#arra_para').removeClass('text-danger');
 					$('#arra_para').html('ARRANCADO');
 					$('#arra_para').addClass('text-success');
@@ -250,7 +252,7 @@ $js="$(document).ready(function() {
 					$('#arra_para').removeClass('text-success');
 					$('#arra_para').html('PARADO');
 					$('#arra_para').addClass('text-danger');
-				  }
+				  }*/
 				  
  
 			});
@@ -258,7 +260,6 @@ $js="$(document).ready(function() {
 	
 /*LLAMAMOS AJAX para cambiar el preogramacion 0 manual 1 programacion*/	
 	var changeCheckbox1 = document.querySelector('.programacion');
-
 	changeCheckbox1.onchange = function() {
 			$.post( 'codigo/ajax/cambiaPrograma.php',{ programa: changeCheckbox1.checked},  function( data ) {
 		  		  console.log('cambiado a programa a : '+data);
