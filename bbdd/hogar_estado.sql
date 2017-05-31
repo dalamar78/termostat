@@ -29,6 +29,7 @@ CREATE TABLE `estado` (
   `estado` int(10) unsigned NOT NULL DEFAULT '0',
   `temperatura_objetivo` decimal(5,1) NOT NULL DEFAULT '0.0',
   `metodo` int(10) unsigned NOT NULL DEFAULT '0',
+  `activo` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
