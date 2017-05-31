@@ -19,7 +19,7 @@ if( $_REQUEST['estado'] == "true" ){
 }else{$estado=0;}
  $sql= "UPDATE estado SET estado='".$estado."'";;
  $SQL->consulta($sql,2);
- 
+ exec("python /var/www/termostat/termostat/pyton/myscript.py");
 
 	
 
