@@ -19,7 +19,7 @@ global $SQL;
  $SQL->consulta($sql,1);
  $valoresTemp = $SQL->extrae(1);
 $SQL->libera(1);
-  $sql= "SELECT temperatura_objetivo FROM estado";
+  $sql= "SELECT temperatura_objetivo,activo FROM estado";
  $SQL->consulta($sql,2);
  $valoresTempObjetivo = $SQL->extrae(2);
  
@@ -28,10 +28,11 @@ class Temperatura {
  public $temperatura;
  public $humedad;
  public $temperaturaObjetivo;
+ public $activo;
 }
 $temp = new Temperatura();
 $temp->temperatura = $valoresTemp["temperatura"];
 $temp->humedad = $valoresTemp["humedad"];
 $temp->temperaturaObjetivo = $valoresTempObjetivo["temperatura_objetivo"];
-
+$temp->temperaturaObjetivo = $valoresTempObjetivo["activo"];
 echo json_encode($temp);?>
