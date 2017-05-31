@@ -21,8 +21,9 @@ if( $_REQUEST['programa'] == "true" ){
 	$metodo=0;
 	}
 
- $sql= "UPDATE estado SET metodo='".$metodo."'";;
+ $sql= "UPDATE estado SET metodo='".$metodo."'";
  $SQL->consulta($sql,2);
+ exec("python /var/www/termostat/termostat/pyton/myscript.py");
  
 
 	
