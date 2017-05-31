@@ -35,4 +35,5 @@ $temp->temperatura = $valoresTemp["temperatura"];
 $temp->humedad = $valoresTemp["humedad"];
 $temp->temperaturaObjetivo = $valoresTempObjetivo["temperatura_objetivo"];
 $temp->temperaturaObjetivo = $valoresTempObjetivo["activo"];
+$SQL->cierra();	
 echo json_encode($temp);?>
