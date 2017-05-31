@@ -53,7 +53,7 @@ try:
 	print "id=%d,estado=%d,temperatura_objetivo=%f,metodo=%d" % \
              (id, estado, temperatura_objetivo, metodo )
 	if estado = 0: # Estado apagado => no hacemos nada
-		pass
+		rele('1') # Paramos el termostato
 	else:
 	#el caldera esta en on	
 		if metodo = 0:
