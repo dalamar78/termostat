@@ -18,12 +18,12 @@
 #pinto el estado actual de la caldera  on-off, arrancada-parada 
  if ($datosIniciales["estado"] == 1 ){
 	 $estado_checked="checked";
-	 $texto_arra="ARRANCADO";
-	 $clase_arra="text-success";
+	 
  }else{
-	 $texto_arra="PARADO";
-	 $clase_arra="text-danger";
+	 $estado_checked="";
+	
  }
+
  if ($datosIniciales["activo"] == 1 ){
 	 $texto_arra="ARRANCADO";
 	 $clase_arra="text-success";
@@ -35,6 +35,8 @@
  if ($datosIniciales["metodo"] == 1 ){
 	 $metodo_checked="checked";
 	 
+ }else{
+	 $metodo_checked="";
  }
  $html='<div class="site-content-title">
                     <h2 class="float-xs-left content-title-main">Temperatura del hogar</h2>
